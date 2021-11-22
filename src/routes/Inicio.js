@@ -1,6 +1,9 @@
+import { Link } from 'react-router-dom'
+
 export default function Inicio() {
   return (
     <div className='mt-10 sm:mt-0'>
+      <Link to='/otro'>Ir a otro</Link>
       <div className='mt-5 md:mt-0 md:col-span-2'>
         <form action='#' method='POST'>
           <div className='shadow overflow-hidden sm:rounded-md'>
