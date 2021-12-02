@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react'
 
 export default function Inicio() {
   const [question, setQuestion] = useState('')
+  const [topic, setTopic] = useState('')
+  const [isFinished, setIsFinished] = useState(false)
 
   const url = 'http://127.0.0.1:5000/api/preguntas'
 
@@ -22,7 +24,9 @@ export default function Inicio() {
       }),
     })
     const parsedQuestion = await questionData.json()
-    setQuestion(parsedQuestion)
+    setQuestion(parsedQuestion.message)
+    setTopic(parsedQuestion.topic)
+    if (parsedQuestion.isFinished) setIsFinished(true)
   }
 
   if (question === 'start') {
@@ -75,20 +79,32 @@ export default function Inicio() {
             </div>
           </div>
           <div className='px-4 py-3 bg-gray-50 text-right sm:px-6'>
-            <button
-              onClick={() => sendRequest(question, false)}
-              type='button'
-              className='mr-4 inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
-            >
-              No
-            </button>
-            <button
-              onClick={() => sendRequest(question, true)}
-              type='button'
-              className='inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
-            >
-              Si
-            </button>
+            {isFinished ? (
+              <button
+                onClick={() => {}}
+                type='button'
+                className='mr-4 inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+              >
+                Reiniciar
+              </button>
+            ) : (
+              <div>
+                <button
+                  onClick={() => sendRequest(topic, false)}
+                  type='button'
+                  className='mr-4 inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
+                >
+                  No
+                </button>
+                <button
+                  onClick={() => sendRequest(topic, true)}
+                  type='button'
+                  className='inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+                >
+                  Si
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </form>
