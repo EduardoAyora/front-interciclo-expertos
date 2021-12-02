@@ -43,12 +43,15 @@ export default function Inicio() {
     if (res) {
       setIsFinished(false)
       starterRequest()
+      dispatch(reset())
     }
   }
 
   async function onSubmitInitialForm(e) {
     e.preventDefault()
+    console.log('antes state', state)
     dispatch(submit())
+    console.log('state', state)
     if (!state.isValid) return
     let firstValue = state.questions[0].value
     const responseData = await fetch(`${url}/grupo-preguntas`, {
@@ -199,6 +202,7 @@ function ContenedorInicio({ restartApp, children }) {
 
 const SELECT_OPTION = 'SELECT_OPTION'
 const SUBMIT = 'SUBMIT'
+const RESET = 'RESET'
 
 export function selectOption(questionNumber, selectedOption) {
   return {
@@ -211,6 +215,12 @@ export function selectOption(questionNumber, selectedOption) {
 export function submit() {
   return {
     type: SUBMIT,
+  }
+}
+
+export function reset() {
+  return {
+    type: RESET,
   }
 }
 
@@ -237,9 +247,11 @@ function reducer(state, action) {
     case SELECT_OPTION: {
       const newQuestions = [...state.questions]
       newQuestions[action.questionNumber].value = action.selectedOption
-      if (action.selectedOption === 'false')
+      if (action.selectedOption === 'false') {
         newQuestions[action.questionNumber].error = true
-      else newQuestions[action.questionNumber].error = false
+      } else {
+        newQuestions[action.questionNumber].error = false
+      }
       return {
         ...state,
         questions: newQuestions,
@@ -249,13 +261,19 @@ function reducer(state, action) {
     case SUBMIT: {
       const newQuestions = [...state.questions]
       newQuestions.forEach((question) => {
+        console.log('submit', question.value)
         if (question.value === 'false') question.error = true
       })
+      console.log(newQuestions)
       return {
         ...state,
         questions: newQuestions,
         isValid: initialFormIsValid(newQuestions),
       }
+    }
+    case RESET: {
+      console.log(initialState)
+      return initialState
     }
     default:
       return state
@@ -265,7 +283,7 @@ function reducer(state, action) {
 function initialFormIsValid(questions) {
   let isValid = true
   questions.forEach((question) => {
-    if (question.error) isValid = false
+    if (question.error || question.value === 'false') isValid = false
   })
   return isValid
 }
