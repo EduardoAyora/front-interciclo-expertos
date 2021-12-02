@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
+import Select from '../components/inputs/Select'
+
 export default function Inicio() {
   const [question, setQuestion] = useState('')
   const [topic, setTopic] = useState('')
@@ -49,47 +51,49 @@ export default function Inicio() {
           <div className='shadow overflow-hidden sm:rounded-md'>
             <div className='px-4 py-5 bg-white sm:p-6'>
               <div className='grid grid-cols-6 gap-6'>
-                <div className='col-span-6'>
-                  <h3 className='block text-2xl font-medium text-gray-700'>
-                    Te gusta construir
-                  </h3>
-                </div>
-
-                <div className='col-span-6'>
-                  <label
-                    htmlFor='country'
-                    className='block text-sm font-medium text-gray-700'
-                  >
-                    Country
-                  </label>
-                  <select
-                    id='country'
-                    name='country'
-                    autoComplete='country-name'
-                    className='mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-                  >
-                    <option>United States</option>
-                    <option>Canada</option>
-                    <option>Mexico</option>
-                  </select>
-                </div>
+                <Select
+                  label='Si tuviera la oportunidad de viajar, preferiría conocer:'
+                  name='primera'
+                  options={[
+                    'Las culturas aborígenes del Amazonas',
+                    'El Museo del Louvre de Paris',
+                    'La Bolsa de Valores de Nueva York',
+                    'Las especies protegidas de las Islas Galápagos',
+                    'El Centro de Investigaciones de la Nasa',
+                  ]}
+                />
+                <Select
+                  label='En la producción de una película, me gustaría participar en:'
+                  name='segunda'
+                  options={[
+                    'Elaboración del guión',
+                    'Actuación',
+                    'Publicidad y marketing',
+                    'Elección y preservación de los escenarios naturales',
+                    'Edición de sonido y digitalización',
+                  ]}
+                />
+                <Select
+                  label='Si tuviese que hacer un trabajo de investigación, me inclinaría por:'
+                  name='tercera'
+                  options={[
+                    'Los efectos de los medios de comunicación de masas en las persona',
+                    'La evolución de la música folklórica en nuestro país',
+                    'El impacto de la globalización económica en la producción nacional',
+                    'Los últimos avances en tratamiento para el cáncer',
+                    'El desarrollo de la robótica',
+                  ]}
+                />
               </div>
             </div>
 
             <div className='px-4 py-3 bg-gray-50 text-right sm:px-6'>
               <button
-                onClick={() => sendRequest('construir', false)}
-                type='button'
-                className='mr-4 inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
-              >
-                No
-              </button>
-              <button
-                onClick={() => sendRequest('construir', true)}
+                onClick={() => sendRequest('construir', 'none')}
                 type='button'
                 className='inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
               >
-                Si
+                Siguiente
               </button>
             </div>
           </div>
