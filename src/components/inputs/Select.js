@@ -1,4 +1,14 @@
-export default function Select({ label, name, options, selectRef }) {
+import { selectOption } from '../../routes/Inicio'
+
+export default function Select({
+  label,
+  name,
+  options,
+  value,
+  error,
+  questionNumber,
+  dispatch,
+}) {
   return (
     <div className='col-span-6'>
       <label
@@ -8,7 +18,8 @@ export default function Select({ label, name, options, selectRef }) {
         {label}
       </label>
       <select
-        ref={selectRef}
+        onChange={(e) => dispatch(selectOption(questionNumber, e.target.value))}
+        value={value}
         id={name}
         name={name}
         autoComplete={name}
@@ -21,6 +32,7 @@ export default function Select({ label, name, options, selectRef }) {
           </option>
         ))}
       </select>
+      {error && <p className='text-red-500 mt-2'>Este campo es requerido</p>}
     </div>
   )
 }

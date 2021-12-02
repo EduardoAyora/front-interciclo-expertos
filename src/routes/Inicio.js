@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useReducer } from 'react'
 
 import Select from '../components/inputs/Select'
 
@@ -8,9 +8,7 @@ export default function Inicio() {
   const [topic, setTopic] = useState('')
   const [isFinished, setIsFinished] = useState(false)
 
-  const primerSelect = useRef()
-  const segundoSelect = useRef()
-  const tercerSelect = useRef()
+  const [state, dispatch] = useReducer(reducer, initialState)
 
   const url = 'http://127.0.0.1:5000/api'
 
@@ -50,7 +48,10 @@ export default function Inicio() {
 
   async function onSubmitInitialForm(e) {
     e.preventDefault()
-    let firstValue = primerSelect.current.value
+    dispatch(submit())
+    if (!state.initialFormIsValid) return
+    let firstValue = state.questions[0].value
+    console.log(firstValue)
     const responseData = await fetch(`${url}/grupo-preguntas`, {
       method: 'POST',
       headers: {
@@ -71,7 +72,10 @@ export default function Inicio() {
             <div className='px-4 py-5 bg-white sm:p-6'>
               <div className='grid grid-cols-6 gap-6'>
                 <Select
-                  selectRef={primerSelect}
+                  value={state.questions[0].value}
+                  error={state.questions[0].error}
+                  questionNumber={0}
+                  dispatch={dispatch}
                   label='Si tuviera la oportunidad de viajar, preferiría conocer:'
                   name='primera'
                   options={[
@@ -83,7 +87,10 @@ export default function Inicio() {
                   ]}
                 />
                 <Select
-                  selectRef={segundoSelect}
+                  value={state.questions[1].value}
+                  error={state.questions[1].error}
+                  questionNumber={1}
+                  dispatch={dispatch}
                   label='En la producción de una película, me gustaría participar en:'
                   name='segunda'
                   options={[
@@ -95,7 +102,10 @@ export default function Inicio() {
                   ]}
                 />
                 <Select
-                  selectRef={tercerSelect}
+                  value={state.questions[2].value}
+                  error={state.questions[2].error}
+                  questionNumber={2}
+                  dispatch={dispatch}
                   label='Si tuviese que hacer un trabajo de investigación, me inclinaría por:'
                   name='tercera'
                   options={[
@@ -186,4 +196,76 @@ function ContenedorInicio({ restartApp, children }) {
       <div className='md:mt-0 md:col-span-2'>{children}</div>
     </div>
   )
+}
+
+const SELECT_OPTION = 'SELECT_OPTION'
+const SUBMIT = 'SUBMIT'
+
+export function selectOption(questionNumber, selectedOption) {
+  return {
+    type: SELECT_OPTION,
+    questionNumber,
+    selectedOption,
+  }
+}
+
+export function submit() {
+  return {
+    type: SUBMIT,
+  }
+}
+
+const initialState = {
+  questions: [
+    {
+      value: 'false',
+      error: false,
+    },
+    {
+      value: 'false',
+      error: false,
+    },
+    {
+      value: 'false',
+      error: false,
+    },
+  ],
+  isValid: false,
+}
+
+function reducer(state, action) {
+  switch (action.type) {
+    case SELECT_OPTION: {
+      const newQuestions = [...state.questions]
+      newQuestions[action.questionNumber].value = action.selectedOption
+      if (action.selectedOption === 'false')
+        newQuestions[action.questionNumber].error = true
+      return {
+        ...state,
+        questions: newQuestions,
+        isValid: initialFormIsValid(newQuestions),
+      }
+    }
+    case SUBMIT: {
+      const newQuestions = [...state.questions]
+      newQuestions.forEach((question) => {
+        if (question.value === 'false') question.error = true
+      })
+      return {
+        ...state,
+        questions: newQuestions,
+        isValid: initialFormIsValid(newQuestions),
+      }
+    }
+    default:
+      return state
+  }
+}
+
+function initialFormIsValid(questions) {
+  let isValid = true
+  questions.forEach((question) => {
+    if (question.error) isValid = false
+  })
+  return isValid
 }
