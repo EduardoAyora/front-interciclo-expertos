@@ -84,7 +84,7 @@ export default function Inicio() {
         <div className='shadow overflow-hidden sm:rounded-md'>
           <div className='px-4 py-5 bg-white sm:p-6'>
             <div className='grid grid-cols-6 gap-6'>
-              <div className='col-span-6 sm:col-span-3'>
+              <div className='col-span-6'>
                 <h3 className='block text-2xl font-medium text-gray-700'>
                   {question}
                 </h3>
@@ -281,7 +281,7 @@ export default function Inicio() {
 function ContenedorInicio({ children }) {
   return (
     <div className='mt-10 sm:mt-0'>
-      <Link to='/otro'>Reiniciar</Link>
+      <Link to='/hechos'>Hechos</Link>
       <div className='mt-5 md:mt-0 md:col-span-2'>{children}</div>
     </div>
   )

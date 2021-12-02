@@ -4,7 +4,7 @@ export default function Otro() {
   return (
     <div>
       <Link to='/'>Ir a inicio</Link>
-      <div>Pagina Otro</div>
+      <div>Pagina Hechos</div>
     </div>
   )
 }
