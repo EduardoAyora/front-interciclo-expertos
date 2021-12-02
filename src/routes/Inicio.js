@@ -8,7 +8,7 @@ export default function Inicio() {
   const [topic, setTopic] = useState('')
   const [isFinished, setIsFinished] = useState(false)
 
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(reducer, initialStateGenerator())
 
   const url = 'http://127.0.0.1:5000/api'
 
@@ -49,9 +49,7 @@ export default function Inicio() {
 
   async function onSubmitInitialForm(e) {
     e.preventDefault()
-    console.log('antes state', state)
     dispatch(submit())
-    console.log('state', state)
     if (!state.isValid) return
     let firstValue = state.questions[0].value
     const responseData = await fetch(`${url}/grupo-preguntas`, {
@@ -224,22 +222,24 @@ export function reset() {
   }
 }
 
-const initialState = {
-  questions: [
-    {
-      value: 'false',
-      error: false,
-    },
-    {
-      value: 'false',
-      error: false,
-    },
-    {
-      value: 'false',
-      error: false,
-    },
-  ],
-  isValid: false,
+function initialStateGenerator() {
+  return {
+    questions: [
+      {
+        value: 'false',
+        error: false,
+      },
+      {
+        value: 'false',
+        error: false,
+      },
+      {
+        value: 'false',
+        error: false,
+      },
+    ],
+    isValid: false,
+  }
 }
 
 function reducer(state, action) {
@@ -261,10 +261,8 @@ function reducer(state, action) {
     case SUBMIT: {
       const newQuestions = [...state.questions]
       newQuestions.forEach((question) => {
-        console.log('submit', question.value)
         if (question.value === 'false') question.error = true
       })
-      console.log(newQuestions)
       return {
         ...state,
         questions: newQuestions,
@@ -272,8 +270,7 @@ function reducer(state, action) {
       }
     }
     case RESET: {
-      console.log(initialState)
-      return initialState
+      return initialStateGenerator()
     }
     default:
       return state
