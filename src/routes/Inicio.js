@@ -6,14 +6,18 @@ export default function Inicio() {
   const [topic, setTopic] = useState('')
   const [isFinished, setIsFinished] = useState(false)
 
-  const url = 'http://127.0.0.1:5000/api/preguntas'
+  const url = 'http://127.0.0.1:5000/api'
 
   useEffect(() => {
-    sendRequest('', '')
+    starterRequest()
   }, [])
 
+  function starterRequest() {
+    sendRequest('', '')
+  }
+
   async function sendRequest(topic, value) {
-    const questionData = await fetch(url, {
+    const questionData = await fetch(`${url}/preguntas`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,6 +31,15 @@ export default function Inicio() {
     setQuestion(parsedQuestion.message)
     setTopic(parsedQuestion.topic)
     if (parsedQuestion.isFinished) setIsFinished(true)
+  }
+
+  async function restartApp() {
+    const resData = await fetch(`${url}/reiniciar`)
+    const res = await resData.json()
+    if (res) {
+      setIsFinished(false)
+      starterRequest()
+    }
   }
 
   if (question === 'start') {
@@ -81,7 +94,7 @@ export default function Inicio() {
           <div className='px-4 py-3 bg-gray-50 text-right sm:px-6'>
             {isFinished ? (
               <button
-                onClick={() => {}}
+                onClick={restartApp}
                 type='button'
                 className='mr-4 inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
               >
