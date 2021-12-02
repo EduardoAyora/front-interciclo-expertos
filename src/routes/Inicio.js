@@ -25,31 +25,30 @@ export default function Inicio() {
     setQuestion(parsedQuestion)
   }
 
-  return (
-    <div className='mt-10 sm:mt-0'>
-      <Link to='/otro'>Reiniciar</Link>
-      <div className='mt-5 md:mt-0 md:col-span-2'>
+  if (question === 'start') {
+    return (
+      <ContenedorInicio>
         <form>
           <div className='shadow overflow-hidden sm:rounded-md'>
             <div className='px-4 py-5 bg-white sm:p-6'>
               <div className='grid grid-cols-6 gap-6'>
                 <div className='col-span-6 sm:col-span-3'>
                   <h3 className='block text-2xl font-medium text-gray-700'>
-                    {question}
+                    Te gusta construir
                   </h3>
                 </div>
               </div>
             </div>
             <div className='px-4 py-3 bg-gray-50 text-right sm:px-6'>
               <button
-                onClick={() => sendRequest(question, false)}
+                onClick={() => sendRequest('construir', false)}
                 type='button'
                 className='mr-4 inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
               >
                 No
               </button>
               <button
-                onClick={() => sendRequest(question, true)}
+                onClick={() => sendRequest('construir', true)}
                 type='button'
                 className='inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
               >
@@ -58,8 +57,42 @@ export default function Inicio() {
             </div>
           </div>
         </form>
-      </div>
-    </div>
+      </ContenedorInicio>
+    )
+  }
+
+  return (
+    <ContenedorInicio>
+      <form>
+        <div className='shadow overflow-hidden sm:rounded-md'>
+          <div className='px-4 py-5 bg-white sm:p-6'>
+            <div className='grid grid-cols-6 gap-6'>
+              <div className='col-span-6 sm:col-span-3'>
+                <h3 className='block text-2xl font-medium text-gray-700'>
+                  {question}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div className='px-4 py-3 bg-gray-50 text-right sm:px-6'>
+            <button
+              onClick={() => sendRequest(question, false)}
+              type='button'
+              className='mr-4 inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500'
+            >
+              No
+            </button>
+            <button
+              onClick={() => sendRequest(question, true)}
+              type='button'
+              className='inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+            >
+              Si
+            </button>
+          </div>
+        </div>
+      </form>
+    </ContenedorInicio>
   )
   // return (
   //   <div className='mt-10 sm:mt-0'>
@@ -214,4 +247,13 @@ export default function Inicio() {
   //     </div>
   //   </div>
   // )
+}
+
+function ContenedorInicio({ children }) {
+  return (
+    <div className='mt-10 sm:mt-0'>
+      <Link to='/otro'>Reiniciar</Link>
+      <div className='mt-5 md:mt-0 md:col-span-2'>{children}</div>
+    </div>
+  )
 }
