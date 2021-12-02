@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 import Select from '../components/inputs/Select'
 
@@ -7,6 +7,10 @@ export default function Inicio() {
   const [question, setQuestion] = useState('')
   const [topic, setTopic] = useState('')
   const [isFinished, setIsFinished] = useState(false)
+
+  const primerSelect = useRef()
+  const segundoSelect = useRef()
+  const tercerSelect = useRef()
 
   const url = 'http://127.0.0.1:5000/api'
 
@@ -44,14 +48,30 @@ export default function Inicio() {
     }
   }
 
+  async function onSubmitInitialForm(e) {
+    e.preventDefault()
+    let firstValue = primerSelect.current.value
+    const responseData = await fetch(`${url}/grupo-preguntas`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ responses: [firstValue] }),
+    })
+    const response = await responseData.json()
+    setQuestion(response.message)
+    setTopic(response.topic)
+  }
+
   if (question === 'start') {
     return (
       <ContenedorInicio restartApp={restartApp}>
-        <form>
+        <form onSubmit={onSubmitInitialForm}>
           <div className='shadow overflow-hidden sm:rounded-md'>
             <div className='px-4 py-5 bg-white sm:p-6'>
               <div className='grid grid-cols-6 gap-6'>
                 <Select
+                  selectRef={primerSelect}
                   label='Si tuviera la oportunidad de viajar, preferiría conocer:'
                   name='primera'
                   options={[
@@ -63,6 +83,7 @@ export default function Inicio() {
                   ]}
                 />
                 <Select
+                  selectRef={segundoSelect}
                   label='En la producción de una película, me gustaría participar en:'
                   name='segunda'
                   options={[
@@ -74,6 +95,7 @@ export default function Inicio() {
                   ]}
                 />
                 <Select
+                  selectRef={tercerSelect}
                   label='Si tuviese que hacer un trabajo de investigación, me inclinaría por:'
                   name='tercera'
                   options={[
@@ -89,8 +111,7 @@ export default function Inicio() {
 
             <div className='px-4 py-3 bg-gray-50 text-right sm:px-6'>
               <button
-                onClick={() => sendRequest('construir', 'none')}
-                type='button'
+                type='submit'
                 className='inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
               >
                 Siguiente

@@ -1,4 +1,4 @@
-export default function Select({ label, name, options }) {
+export default function Select({ label, name, options, selectRef }) {
   return (
     <div className='col-span-6'>
       <label
@@ -8,6 +8,7 @@ export default function Select({ label, name, options }) {
         {label}
       </label>
       <select
+        ref={selectRef}
         id={name}
         name={name}
         autoComplete={name}
