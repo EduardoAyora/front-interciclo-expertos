@@ -15,7 +15,9 @@ export default function Select({ label, name, options }) {
       >
         <option>Seleccione...</option>
         {options.map((option, index) => (
-          <option key={index}>{option}</option>
+          <option value={index} key={index}>
+            {option}
+          </option>
         ))}
       </select>
     </div>
