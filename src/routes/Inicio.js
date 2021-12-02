@@ -49,7 +49,9 @@ export default function Inicio() {
   async function onSubmitInitialForm(e) {
     e.preventDefault()
     dispatch(submit())
-    if (!state.initialFormIsValid) return
+    console.log(state)
+    if (!state.isValid) return
+    console.log('paso')
     let firstValue = state.questions[0].value
     console.log(firstValue)
     const responseData = await fetch(`${url}/grupo-preguntas`, {
