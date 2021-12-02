@@ -240,6 +240,7 @@ function reducer(state, action) {
       newQuestions[action.questionNumber].value = action.selectedOption
       if (action.selectedOption === 'false')
         newQuestions[action.questionNumber].error = true
+      else newQuestions[action.questionNumber].error = false
       return {
         ...state,
         questions: newQuestions,
