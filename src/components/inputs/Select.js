@@ -1,4 +1,4 @@
-import { selectOption } from '../../routes/Inicio'
+import { selectOption } from '../../context/AppContext'
 
 export default function Select({
   label,
