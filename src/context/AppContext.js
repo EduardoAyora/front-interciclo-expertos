@@ -120,6 +120,18 @@ function initialStateGenerator() {
         value: 'false',
         error: false,
       },
+      {
+        value: 'false',
+        error: false,
+      },
+      {
+        value: 'false',
+        error: false,
+      },
+      {
+        value: 'false',
+        error: false,
+      },
     ],
     isValid: false,
   }

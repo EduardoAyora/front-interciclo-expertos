@@ -67,6 +67,51 @@ export default function Inicio() {
                   'El desarrollo de la robótica',
                 ]}
               />
+              <Select
+                value={state.questions[3].value}
+                error={state.questions[3].error}
+                questionNumber={3}
+                dispatch={dispatch}
+                label='En una empresa, el rol que más me acomodaría es:'
+                name='cuarta'
+                options={[
+                  'Encargarme de las relaciones públicas y del bienestar del personal',
+                  'Diseñar la imagen corporativa y la campaña publicitaria',
+                  'Administrar las ﬁnanzas',
+                  'Encargarme que el trabajo no atente contra la salud de los trabajadores',
+                  'Deﬁnir la adquisición de nuevas maquinarias para la producción',
+                ]}
+              />
+              <Select
+                value={state.questions[4].value}
+                error={state.questions[4].error}
+                questionNumber={4}
+                dispatch={dispatch}
+                label='La sección del diario que leería primero es:'
+                name='quinta'
+                options={[
+                  'Política',
+                  'Arte',
+                  'Economía',
+                  'Salud',
+                  'Computación',
+                ]}
+              />
+              <Select
+                value={state.questions[5].value}
+                error={state.questions[5].error}
+                questionNumber={5}
+                dispatch={dispatch}
+                label='Para conocer el desarrollo de una cultura, observaría de preferencia:'
+                name='sexta'
+                options={[
+                  'El desarrollo del pensamiento ﬁlosóﬁco',
+                  'El desarrollo de las artes',
+                  'El crecimiento económico',
+                  'El progreso de la medicina',
+                  'Los avances en tecnología e ingeniería',
+                ]}
+              />
             </div>
           </div>
 
